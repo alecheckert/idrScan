@@ -1,5 +1,5 @@
 ======================================================================================================
-idrScan: a Python utility for calculating and comparing intrinsic disorder scores for individual exons.
+idrScan: a Python utility for calculating and comparing intrinsic disorder scores for individual exons
 ======================================================================================================
 
 Motivation.
