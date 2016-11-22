@@ -83,7 +83,8 @@ def transcriptSequence(transcript_file, peptide_column='protein', rank_column='r
 	f = f.set_index(rank_column, drop=False)
 	protein = ''
 	for i in f.index:
-		protein += f.ix[i,peptide_column]
+		if type(f.ix[i,peptide_column])==type(''):
+			protein += f.ix[i,peptide_column]
 	return protein
 
 def iupredTranscript(transcript_file, peptide_column='protein', rank_column='rank', kind='short'):
@@ -132,17 +133,27 @@ def pyiupred(transcript_file, peptide_column='protein', rank_column='rank', kind
 	df = df.sort_values(by=rank_column)
 	df = df.set_index(rank_column, drop=False)
 	df.ix[1,'protein_start']=0
-	df.ix[1,'protein_end']=len(df.ix[1,'protein'])
+	if type(df.ix[1,'protein'])==type(''):
+		df.ix[1,'protein_end']=len(df.ix[1,'protein'])
+	else:
+		df.ix[1,'protein_end']=0
 	if len(df)==1:
 		pass
 	else:
 		for i in range(2, len(df.index)+1):
 			df.ix[i, 'protein_start'] = df.ix[i-1, 'protein_end']
-			df.ix[i, 'protein_end'] = df.ix[i, 'protein_start'] + len(df.ix[i,'protein'])
+			if type(df.ix[i,'protein'])==type(''):
+				df.ix[i, 'protein_end'] = df.ix[i, 'protein_start'] + len(df.ix[i,'protein'])
+			else:
+				df.ix[i,'protein_end']=df.ix[i,'protein_start']
 	for i in df.index:
 		exon_scores = scores.ix[df.ix[i,'protein_start']:df.ix[i,'protein_end']-1]['residue_iupred'].values
-		mean_iupred = float(sum(exon_scores))/len(exon_scores)
-		stdev_iupred = math.sqrt(float(sum([(mean_iupred-j)**2 for j in exon_scores]))/len(exon_scores))
+		if len(exon_scores)==0:
+			mean_iupred = float('NaN')
+			stdev_iupred = float('NaN')
+		else:
+			mean_iupred = float(sum(exon_scores))/len(exon_scores)
+			stdev_iupred = math.sqrt(float(sum([(mean_iupred-j)**2 for j in exon_scores]))/len(exon_scores))
 		df.ix[i,'exon_iupred'] = mean_iupred
 		df.ix[i,'exon_iupred_stdev'] = stdev_iupred
 	df.to_csv(transcript_file, index=False)
