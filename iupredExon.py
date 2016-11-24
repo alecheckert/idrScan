@@ -186,6 +186,14 @@ if __name__=='__main__':
 	if os.path.isdir(args.infile):
 		transcript_files = ['%s/%s' % (args.infile, k) for k in os.listdir(args.infile)]
 		pyiupredFiles(transcript_files, peptide_column=args.peptide_column, rank_column=args.rank_column, kind=args.kind)
+		if os.path.isfile('_temp.fasta'):
+			os.system('rm _temp.fasta')
+		if os.path.isfile('_temp.iupred'):
+			os.system('rm _temp.iupred')
 	else:
 		pyiupred(args.infile, peptide_column=args.peptide_column, rank_column=args.rank_column, kind=args.kind)
+	if os.path.isfile('_temp.fasta'):
+		os.system('rm _temp.fasta')
+	if os.path.isfile('_temp.iupred'):
+		os.system('rm _temp.iupred')
 	print "Finished"
