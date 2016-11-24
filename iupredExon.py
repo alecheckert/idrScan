@@ -169,7 +169,7 @@ def pyiupredFiles(transcript_files, peptide_column='protein', rank_column='rank'
 		print "Calculating exon IUPRED scores for file %s..." % h
 		try:
 			pyiupred(h, peptide_column=peptide_column, rank_column=rank_column, kind=kind)
-		except ValueError:
+		except (KeyError, ValueError) as e2:
 			print "Could not calculate IUPRED scores for file %s" % h
 			continue
 		
