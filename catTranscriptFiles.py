@@ -6,7 +6,7 @@ import pandas as pd
 import os
 import argparse
 
-def catTranscriptFiles(filenames, outfile, column_drops=['startPhase', 'endPhase', 'constitutive', 'rank', 'protein_start', 'protein_end', 'entropy', 'exon_iupred', 'exon_iupred_stdev']):
+def catTranscriptFiles(filenames, outfile, drop_columns=['startPhase', 'endPhase', 'constitutive', 'rank', 'protein_start', 'protein_end', 'entropy', 'exon_iupred', 'exon_iupred_stdev', 'exon_id']):
 	'''
 	Find the full protein sequences for a set of transcript files and write them
 	to a new CSV.
@@ -15,7 +15,7 @@ def catTranscriptFiles(filenames, outfile, column_drops=['startPhase', 'endPhase
 		filenames : list of string, names of transcript files or directories containing
 			transcript files
 		outfile : string, name of file to write full protein sequences to
-		column_drops : list of string, columns to remove from the final dataframe
+		drop_columns : list of string, columns to remove from the final dataframe
 			(should be columns that are assumed to be exon- rather than transcript-
 			specific)
 
