@@ -14,4 +14,12 @@ Component Programs.
 
 ``sequenceEntropy.py``: calculate the simple information (base 2) entropy of individual exons. Entropy is an effective way of detecting homopolymeric sequences. Short sequences (less than 50 amino acids) have entropy sharply skewed by sampling effects.
 
-``iupredExon.py``: calculate the mean IUPRED score and its standard deviation for individual exons in a transcript file. IUPRED is a predictor that assigns each amino acid an energetic contribution to the stability of the protein; this contribution is a function of the frequencies of all other amino acids in the sequence. As such, IUPRED scores will be different when the algorithm is run on an individual exon or on an entire protein sequence. 
+``iupredExon.py``: calculate the mean IUPred score and its standard deviation for individual exons in a transcript file. IUPred is a predictor that assigns each amino acid an energetic contribution to the stability of the protein; this contribution is a function of the frequencies of all other amino acids in the sequence. As such, IUPred scores will be different when the algorithm is run on an individual exon or on an entire protein sequence. 
+
+``iupredProtein.py``: calculate the mean IUPred score for a file containing set of whole protein sequences.
+
+``catTranscriptFiles.py``: useful for converting between exon-specific and full protein-specific analyses. For a set of transcript files, assembles the complete transcript sequences and protein sequences and then concatenates this information into a single file.
+
+``aaFrequencies.py``: calculate the frequencies of each amino acid for a set of transcripts or exons
+
+
