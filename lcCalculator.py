@@ -94,11 +94,10 @@ def lcCalculator(sequence_file, target_aa, window_size=30, protein_column='prote
 	peak_column = '%speak' % aa_string
 	for i in f.index:
 		if (type(f.ix[i,protein_column]!=type('')) and type(f.ix[i,protein_column])!=str) or (len(f.ix[i,protein_column])==0):
-			print type(f.ix[i,protein_column])
 			f.ix[i,peak_column] = 0
 		else:
 			start, end, subseq, count = highestCount(f.ix[i,protein_column], masker=masker, window_size=window_size)
-			print subseq, count ##just for fun
+			#print subseq, count ##just for fun
 			f.ix[i,peak_column] = count
 	if write_in_place:
 		f.to_csv(sequence_file, index=False)
