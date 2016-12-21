@@ -80,6 +80,7 @@ def lcCalculator(sequence_file, target_aa, window_size=30, protein_column='prote
 		Pandas DataFrame, contents of file containing the new counts
 		
 	'''
+	print "Reading file..."
 	f = pd.read_csv(sequence_file)
 	masker = makeMasker(target_aa)
 	if not protein_column in f.columns:
@@ -92,6 +93,7 @@ def lcCalculator(sequence_file, target_aa, window_size=30, protein_column='prote
 		for aa in target_aa:
 			aa_string += '%s_' % aa
 	peak_column = '%speak' % aa_string
+	print "Scanning sequences..."
 	for i in f.index:
 		if (type(f.ix[i,protein_column]!=type('')) and type(f.ix[i,protein_column])!=str) or (len(f.ix[i,protein_column])==0):
 			f.ix[i,peak_column] = 0
@@ -99,6 +101,7 @@ def lcCalculator(sequence_file, target_aa, window_size=30, protein_column='prote
 			start, end, subseq, count = highestCount(f.ix[i,protein_column], masker=masker, window_size=window_size)
 			#print subseq, count ##just for fun
 			f.ix[i,peak_column] = count
+	print "Writing to file..."
 	if write_in_place:
 		f.to_csv(sequence_file, index=False)
 	return f
@@ -114,3 +117,4 @@ if __name__=='__main__':
 
 	args = parser.parse_args()
 	lcCalculator(args.infile, target_aa=args.target_amino_acids, window_size=args.window, protein_column=args.column, write_in_place=args.write_in_place, target_aa_name=args.output_column)
+	print "Finished"
