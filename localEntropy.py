@@ -31,7 +31,7 @@ def entropy(sequence):
 	count_list = [float(i)/count_sum for i in count_list if i!=0]
 	return abs(sum([i*math.log(i) for i in count_list]))
 
-def localEntropy(sequence, window=30, consider_short_sequences=False):
+def localEntropy(sequence, window=20, consider_short_sequences=False):
 	'''
 	Calculate the mean sequence entropy within a defined window size
 	across all subsequences of a protein sequence.
@@ -58,7 +58,7 @@ def localEntropy(sequence, window=30, consider_short_sequences=False):
 			entropies.append(entropy(subsequence))
 		return float(sum(entropies))/len(entropies)
 
-def runLocalEntropy(filename, window=30, protein_column='protein', consider_short_sequences=False):
+def runLocalEntropy(filename, window=20, protein_column='protein', consider_short_sequences=False):
 	'''
 	Run the local entropy algorithm on a set of protein sequences in a 
 	Pandas-style CSV file.
@@ -83,14 +83,17 @@ def runLocalEntropy(filename, window=30, protein_column='protein', consider_shor
 			f.ix[i,'local_entropy'] = localEntropy(f.ix[i,'protein'])
 		except TypeError:
 			f.ix[i,'local_entropy'] = False
+		#print f.ix[i,'description'], f.ix[i,'protein'], f.ix[i,'local_entropy']
 	f.to_csv(filename,index=False)
 	return f
 
 if __name__=='__main__':
 	parser = argparse.ArgumentParser(description='calculate mean local entropy over subsequences of proteins')
 	parser.add_argument('infile', type=str, help='CSV containing protein sequences')
-	parser.add_argument('-w', '--window', type=int, help='length of subsequences for the entropy calculation. Default 30.', default=30)
+	parser.add_argument('-w', '--window', type=int, help='length of subsequences for the entropy calculation. Default 20.', default=20)
 	parser.add_argument('-c', '--column', type=str, help='name of protein column in *filename* containing the protein sequences. Default "protein".', default='protein')
 	parser.add_argument('-s', '--short', action='store_true', help='whether or not to calculate entropy for sequences shorter than *window*', default=False)
 	args = parser.parse_args()
+	print "Calculating local entropy..."
 	runLocalEntropy(args.infile, window=args.window, protein_column=args.column, consider_short_sequences=args.short)
+	print "Finished"
