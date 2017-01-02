@@ -89,7 +89,8 @@ def iupredProtein(protein_file, kind='short', protein_column='protein'):
 			stdev_iupred = math.sqrt(float(sum([(mean_iupred-k)**2 for k in scores]))/len(scores))
 			f.ix[i,'iupred_mean']=mean_iupred
 			f.ix[i,'iupred_stdev']=stdev_iupred
-			print "Successfully calculated IUPred scores for %s" % f.ix[i,'description']
+			if 'description' in f.columns:
+				print "Successfully calculated IUPred scores for %s" % f.ix[i,'description']
 		f.to_csv(protein_file, index=False)
 
 if __name__=='__main__':
