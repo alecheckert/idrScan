@@ -16,10 +16,14 @@ Component Programs.
 
 ``iupredExon.py``: calculate the mean IUPred score and its standard deviation for individual exons in a transcript file. IUPred is a predictor that assigns each amino acid an energetic contribution to the stability of the protein; this contribution is a function of the frequencies of all other amino acids in the sequence. As such, IUPred scores will be different when the algorithm is run on an individual exon or on an entire protein sequence. 
 
-``iupredProtein.py``: calculate the mean IUPred score for a file containing set of whole protein sequences.
+``iupredProtein.py``: calculate the mean IUPred score for a file containing a set of whole protein sequences.
 
 ``catTranscriptFiles.py``: useful for converting between exon-specific and full protein-specific analyses. For a set of transcript files, assembles the complete transcript sequences and protein sequences and then concatenates this information into a single file.
 
 ``aaFrequencies.py``: calculate the frequencies of each amino acid for a set of transcripts or exons
 
+``pairAlign.py``: perform exhaustive local or global alignments between the sequences in two dataframes. Useful for identifying homologs pairs in two sets of protein or exon sequences.
 
+``localEntropy.py``: calculate the average of sequence entropy over subsequences of a protein sequence. Useful for comparing proteins with significant local biases toward one or more of the amino acids.
+
+``lcCalculator.py``: for a protein sequence, find the subsequence most biased in composition toward a subset of the amino acids.
