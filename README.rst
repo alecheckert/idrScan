@@ -27,3 +27,5 @@ Component Programs.
 ``localEntropy.py``: calculate the average of sequence entropy over subsequences of a protein sequence. Useful for comparing proteins with significant local biases toward one or more of the amino acids.
 
 ``lcCalculator.py``: for a protein sequence, find the subsequence most biased in composition toward a subset of the amino acids.
+
+``readUniprot.py``: read either FASTA or FASTA+metadata files in the Uniprot format
