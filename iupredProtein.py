@@ -6,7 +6,7 @@ import argparse
 import os
 import math
 
-def sequenceIupred(sequence, kind='short'):
+def sequenceIupred(sequence, iupred_dir, kind='short'):
     '''
     Given a sequence, calculate the IUPRED score of each residue.
 	Assumes that the *iupred* command is in the shell path.
@@ -25,7 +25,7 @@ def sequenceIupred(sequence, kind='short'):
     o = open(temp_fasta,'w')
     o.write('>temp\n%s' % sequence)
     o.close()
-    os.system("iupred %s %s > %s" % (temp_fasta, kind, temp_iupred))
+    os.system("%s/iupred %s %s > %s" % (iupred_dir, temp_fasta, kind, temp_iupred))
     scores = readIupred(temp_iupred)
     os.system('rm %s' % temp_fasta)
     os.system('rm %s' % temp_iupred)
@@ -62,7 +62,7 @@ def tryConvert(arg):
     except (AttributeError, TypeError, ValueError) as e3:
         return arg
 
-def iupredProtein(protein_file, kind='short', protein_column='protein'):
+def iupredProtein(protein_file, kind='short', protein_column='protein', iupred_dir='/Users/alecheckert/bin/iupred'):
 	'''
 	Given a file with the entire protein sequences for a list of transcripts,
 	calculate the mean IUPred score for each protein.
@@ -84,7 +84,7 @@ def iupredProtein(protein_file, kind='short', protein_column='protein'):
 			print "Successfully found file %s, but could not find a ``%s'' column in that file." % (protein_file, protein_column)
 			exit(1)
 		for i in f.index:
-			iupred_protein_list = sequenceIupred(f.ix[i,protein_column], kind=kind)
+			iupred_protein_list = sequenceIupred(f.ix[i,protein_column], iupred_dir, kind=kind)
 			scores = [j[2] for j in iupred_protein_list]
 			mean_iupred = float(sum(scores))/len(scores)
 			stdev_iupred = math.sqrt(float(sum([(mean_iupred-k)**2 for k in scores]))/len(scores))
@@ -99,10 +99,11 @@ if __name__=='__main__':
 	parser.add_argument('infile', type=str, help='CSV containing the full protein sequences')
 	parser.add_argument('-p', '--protein_column', type=str, help="name of the column containing the protein sequences in the infile. Default is ``protein''", default='protein')
 	parser.add_argument('-k', '--kind', type=str, help="kind of IUPred score to calculate. default is ``short''", default='short')
+	parser.add_argument('-i', '--iupred_dir', type=str, help='path to the iupred command', default='/Users/alecheckert/bin/iupred')
 			
 	args = parser.parse_args()
 	try:
-		iupredProtein(args.infile, kind=args.kind, protein_column=args.protein_column)
+		iupredProtein(args.infile, kind=args.kind, protein_column=args.protein_column, iupred_dir=args.iupred_dir)
 	except (TypeError, pd.io.common.CParserError) as e_all:
 		print "Could not read the input files."
 		exit(1)
