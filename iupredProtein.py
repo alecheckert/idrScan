@@ -9,6 +9,7 @@ import math
 def sequenceIupred(sequence, kind='short'):
     '''
     Given a sequence, calculate the IUPRED score of each residue.
+	Assumes that the *iupred* command is in the shell path.
 
     INPUT
         sequence : string, amino acids in the sequence
@@ -24,7 +25,7 @@ def sequenceIupred(sequence, kind='short'):
     o = open(temp_fasta,'w')
     o.write('>temp\n%s' % sequence)
     o.close()
-    os.system("/Users/alecheckert/bin/iupred/iupred %s %s > %s" % (temp_fasta, kind, temp_iupred))
+    os.system("iupred %s %s > %s" % (temp_fasta, kind, temp_iupred))
     scores = readIupred(temp_iupred)
     os.system('rm %s' % temp_fasta)
     os.system('rm %s' % temp_iupred)
