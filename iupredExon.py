@@ -23,11 +23,14 @@ def sequenceIupred(sequence, kind='short'):
 	temp_fasta = '_temp.fasta'
 	temp_iupred = '_temp.iupred'
 
-	o = open(temp_fasta,'w')
-	o.write('>temp\n%s' % sequence)
-	o.close()
+	with open(temp_fasta, 'w') as outf:
+		outf.write('>temp\n%s' % sequence)
+
 	os.system("/Users/alecheckert/bin/iupred/iupred %s %s > %s" % (temp_fasta, kind, temp_iupred))
+	
 	scores = readIupred(temp_iupred)
+	os.system('rm %s' % temp_fasta)
+	os.system('rm %s' % temp_iupred)
 	return scores
 
 def readIupred(iupred_file):
@@ -36,13 +39,15 @@ def readIupred(iupred_file):
 	file containing output exactly as given by the *iupred* command.
 
 	'''	
-	g = open(iupred_file, 'r')
-	glines = g.read().split('\n')
-	glines = [i for i in glines if len(i)>0]
-	glines = [i for i in glines if i[0]!='#']
-	glines = [i.split(' ') for i in glines]
-	glines = [[tryConvert(j) for j in i if len(j)>0] for i in glines if len(i)>0]
-	return glines
+	with open(iupred_file, 'r') as g:
+		glines = g.read().split('\n')
+		glines = [i for i in glines if len(i) > 0]
+		glines = [i for i in glines if i[0] != '#']
+
+	glines = ['pos AA score'] + glines
+	fstring = '\n'.join(glines)
+	fakefile = StringIO(fstring)
+	return pd.read_csv(fakefile, delim_whitespace=True, index_col=0)
 
 def tryConvert(arg):
 	'''
