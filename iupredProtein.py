@@ -6,7 +6,7 @@ import argparse
 import os
 import math
 
-from StringIO import StringIO
+from io import StringIO
 
 
 def sequenceIupred(sequence, kind='short'):
@@ -74,7 +74,7 @@ def iupredProtein(protein_file, kind='short', protein_column='protein'):
 
     '''
     if not os.path.isfile(protein_file):
-        print "Could not find file %s" % protein_file
+        print("Could not find file %s" % protein_file)
         exit(1)
     else:
         f = pd.read_csv(protein_file)
@@ -85,14 +85,14 @@ def iupredProtein(protein_file, kind='short', protein_column='protein'):
 
         for i in f.index:
             iupred_protein_df = sequenceIupred(
-                f.ix[i, protein_column], iupred_dir, kind=kind)
+                f.ix[i, protein_column], kind=kind)
             scores = iupred_protein_df.score
             f.ix[i, 'iupred_mean'] = scores.mean()
             f.ix[i, 'iupred_stdev'] = scores.std()
 
             if 'description' in f.columns:
                 desc = f.ix[i, 'description']
-                print "Successfully calculated IUPred scores for %s" % desc
+                print("Successfully calculated IUPred scores for %s" % desc)
         f.to_csv(protein_file, index=False)
 
 
@@ -109,9 +109,9 @@ if __name__ == '__main__':
                         help="kind of IUPred score to calculate. default is ``short''")
 
     args = parser.parse_args()
-    try:
-        iupredProtein(args.infile, kind=args.kind,
+    #try:
+    iupredProtein(args.infile, kind=args.kind,
                       protein_column=args.protein_column)
-    except:
-        print "Could not read the input files."
-        exit(1)
+   # except:
+   #     print("Could not read the input files.")
+   #     exit(1)
