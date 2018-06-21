@@ -60,14 +60,14 @@ def readIupred(iupred_file):
     return pd.read_csv(fakefile, delim_whitespace=True, index_col=0)
 
 
-def iupredProtein(protein_file, kind='short', protein_column='protein'):
+def iupredProtein(protein_file, kind='short', protein_column='sequence'):
     '''
     Given a file with the entire protein sequences for a list of transcripts,
     calculate the mean IUPred score for each protein.
 
     INPUT
         protein_file : string, name of file containing protein sequences under
-            the column ``protein''
+            the column ``protein_column''
 
     RETURNS
         pandas DataFrame, containing the extra iupred_protein column
@@ -103,7 +103,7 @@ if __name__ == '__main__':
                         type=str,
                         help='CSV containing the full protein sequences')
     parser.add_argument('-p',
-                        '--protein_column', type=str, default='protein',
+                        '--protein_column', type=str, default='sequence',
                         help="Name of the column containing the protein sequences in the infile.")
     parser.add_argument('-k', '--kind', type=str, default='short',
                         help="kind of IUPred score to calculate. default is ``short''")
