@@ -74,19 +74,19 @@ if __name__=='__main__':
 
 	args = parser.parse_args()
 	if not args.uniprot:
-		print "Reading FASTA..."
+		print("Reading FASTA...")
 		try:
 			f = readFasta(args.fasta_file)
 		except IOError:
-			print 'Could not find the FASTA file %s' % args.fasta_file
+			print('Could not find the FASTA file %s' % args.fasta_file)
 	else:
-		print "Synthesizing FASTA and metadata files..."
+		print("Synthesizing FASTA and metadata files...")
 		try:
 			f = readUniprot(args.fasta_file, args.uniprot, delim=args.delim, outfilename=args.outfile)
 		except IOError:
-			print 'Could not find the FASTA file %s or the UNIPROT file %s' % (args.fasta_file, args.uniprot)
+			print('Could not find the FASTA file %s or the UNIPROT file %s' % (args.fasta_file, args.uniprot))
 			exit(1)
-	print "Writing data..."
+	print("Writing data...")
 	if args.outfile:
 		f.to_csv(args.outfile,index=False)
 	else:

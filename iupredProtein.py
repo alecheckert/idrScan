@@ -107,9 +107,13 @@ if __name__ == '__main__':
                         help="Name of the column containing the protein sequences in the infile.")
     parser.add_argument('-k', '--kind', type=str, default='short',
                         help="kind of IUPred score to calculate. default is ``short''")
+    parser.add_argument('-f', '--fasta', action='store_true', help='input file is a FASTA', default=False)
 
     args = parser.parse_args()
-    #try:
+    if args.fasta:
+        os.system('python readUniprot.py %s -o %s_.csv' % (args.infile, os.path.splitext(args.infile)[0]))
+        args.infile = '%s_.csv' % os.path.splitext(args.infile)[0]
+        args.protein_column = 'sequence'
     iupredProtein(args.infile, kind=args.kind,
                       protein_column=args.protein_column)
    # except:
